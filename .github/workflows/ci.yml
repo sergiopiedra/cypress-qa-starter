@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekdays 06:00 UTC: catches drift in the third-party sites under test.
+    - cron: '0 6 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      grepTags:
+        description: 'Only run tests with these tags, e.g. "@smoke" or "@api+@auth". Empty runs everything.'
+        required: false
+        default: ''
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Optional repo secret; falls back to reqres' public free-tier key.
+  CYPRESS_reqresApiKey: ${{ secrets.REQRES_API_KEY || 'reqres-free-v1' }}
+
+jobs:
+  static:
+    name: Lint & typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run format:check
+
+  e2e:
+    name: Cypress shard ${{ matrix.shard }}/${{ strategy.job-total }}
+    needs: static
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      # Let every shard finish so the merged report is complete.
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Run Cypress
+        uses: cypress-io/github-action@v7
+        with:
+          browser: chrome
+          expose: ${{ inputs.grepTags && format('grepTags={0}+-@quarantine', inputs.grepTags) || '' }}
+        env:
+          # cypress-split assigns each shard a slice of the spec files.
+          SPLIT: ${{ strategy.job-total }}
+          SPLIT_INDEX: ${{ strategy.job-index }}
+      - name: Upload shard report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: cypress-reports-${{ matrix.shard }}
+          path: cypress/reports
+          retention-days: 7
+
+  report:
+    name: Merge HTML report
+    needs: e2e
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: cypress-reports-*
+          path: all-reports
+      - name: Merge reports and write job summary
+        run: npm run report:merge -- all-reports merged-report
+      - uses: actions/upload-artifact@v7
+        with:
+          name: cypress-html-report
+          path: merged-report
+          retention-days: 14
+
+  quarantine:
+    name: Quarantined tests (non-blocking)
+    needs: static
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Quarantined tests report their signal without ever blocking a merge.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Run quarantined tests without retries
+        uses: cypress-io/github-action@v7
+        with:
+          browser: chrome
+          expose: grepTags=@quarantine
+          config: retries=0

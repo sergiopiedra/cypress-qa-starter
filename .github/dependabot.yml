@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      cypress:
+        patterns: ['cypress', '@cypress/*', 'cypress-*']
+      lint:
+        patterns: ['eslint', '@eslint/*', 'eslint-*', 'typescript-eslint', 'prettier', 'typescript']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
