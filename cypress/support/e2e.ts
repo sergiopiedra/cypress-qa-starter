@@ -2,6 +2,7 @@
 import { register as registerCypressGrep } from '@cypress/grep';
 import 'cypress-mochawesome-reporter/register';
 
+import './commands/a11y';
 import './commands/api';
 import './commands/auth';
 

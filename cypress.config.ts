@@ -51,6 +51,17 @@ export default defineConfig({
       registerMochawesome(on);
       cypressGrepPlugin(config);
 
+      on('task', {
+        log(message: unknown) {
+          console.log(message);
+          return null;
+        },
+        table(rows: Record<string, unknown>[]) {
+          console.table(rows);
+          return null;
+        },
+      });
+
       return config;
     },
   },

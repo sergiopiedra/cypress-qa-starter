@@ -1,0 +1,18 @@
+{
+  "wcagTags": ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"],
+  "failOnImpacts": ["critical", "serious"],
+  "baseline": {
+    "/checkboxes": [
+      {
+        "rule": "label",
+        "reason": "Known defect in the demo app: checkboxes have no associated <label>. Remove once fixed upstream."
+      }
+    ],
+    "/dropdown": [
+      {
+        "rule": "select-name",
+        "reason": "Known defect in the demo app: <select id=\"dropdown\"> has no accessible name. Remove once fixed upstream."
+      }
+    ]
+  }
+}
