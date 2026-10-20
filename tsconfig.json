@@ -17,5 +17,5 @@
     "resolveJsonModule": true,
     "noEmit": true
   },
-  "include": ["cypress/**/*.ts", "scripts/**/*.ts", "cypress.config.ts"]
+  "include": ["cypress/**/*.ts", "scripts/**/*.mts", "cypress.config.ts"]
 }

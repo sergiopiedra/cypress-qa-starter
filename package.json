@@ -31,7 +31,7 @@
     "test:a11y": "cypress run --browser chrome --spec \"cypress/e2e/a11y/**/*.cy.ts\"",
     "test:perf": "cypress run --browser chrome --spec \"cypress/e2e/perf/**/*.cy.ts\"",
     "test:quarantine": "cypress run --browser chrome --expose grepTags=@quarantine",
-    "report:merge": "node scripts/merge-reports.ts",
+    "report:merge": "node scripts/merge-reports.mts",
     "clean": "rimraf cypress/reports cypress/screenshots cypress/videos cypress/downloads cypress/.tmp",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

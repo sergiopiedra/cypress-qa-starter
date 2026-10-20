@@ -3,6 +3,7 @@ import { defineConfig } from 'cypress';
 import registerMochawesome from 'cypress-mochawesome-reporter/plugin';
 import cypressOnFix from 'cypress-on-fix';
 
+import { registerFlakyReporter } from './cypress/plugins/flaky-reporter';
 import { registerLighthouse } from './cypress/plugins/lighthouse';
 
 export default defineConfig({
@@ -17,7 +18,8 @@ export default defineConfig({
     saveJson: true,
   },
 
-  // Retry failed tests in `cypress run` only; a test that passes on retry is reported as flaky.
+  // Retry failed tests in `cypress run` only. A test that passes on retry is still recorded as
+  // flaky by `cypress/plugins/flaky-reporter.ts`, so retries never hide instability.
   retries: { runMode: 2, openMode: 0 },
 
   viewportWidth: 1280,
@@ -53,6 +55,7 @@ export default defineConfig({
       registerMochawesome(on);
       cypressGrepPlugin(config);
       registerLighthouse(on);
+      registerFlakyReporter(on);
 
       on('task', {
         log(message: unknown) {
