@@ -1,0 +1,10 @@
+export { AddRemoveElementsPage } from './AddRemoveElementsPage';
+export { BasePage } from './BasePage';
+export { CheckboxesPage } from './CheckboxesPage';
+export { DisappearingElementsPage } from './DisappearingElementsPage';
+export { DropdownPage } from './DropdownPage';
+export { DynamicLoadingPage } from './DynamicLoadingPage';
+export { JavaScriptAlertsPage } from './JavaScriptAlertsPage';
+export { LoginPage } from './LoginPage';
+export { SecureAreaPage } from './SecureAreaPage';
+export { TablesPage } from './TablesPage';

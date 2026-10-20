@@ -19,6 +19,8 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
+      // Custom commands are typed by augmenting `declare global { namespace Cypress { ... } }`.
+      '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },

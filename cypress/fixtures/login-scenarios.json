@@ -1,0 +1,38 @@
+[
+  {
+    "title": "valid credentials",
+    "username": "tomsmith",
+    "password": "SuperSecretPassword!",
+    "outcome": "success",
+    "message": "You logged into a secure area!",
+    "tags": ["@smoke"]
+  },
+  {
+    "title": "unknown username",
+    "username": "jdoe",
+    "password": "SuperSecretPassword!",
+    "outcome": "error",
+    "message": "Your username is invalid!"
+  },
+  {
+    "title": "wrong password",
+    "username": "tomsmith",
+    "password": "not-the-password",
+    "outcome": "error",
+    "message": "Your password is invalid!"
+  },
+  {
+    "title": "username with different casing",
+    "username": "TomSmith",
+    "password": "SuperSecretPassword!",
+    "outcome": "error",
+    "message": "Your username is invalid!"
+  },
+  {
+    "title": "empty form",
+    "username": "",
+    "password": "",
+    "outcome": "error",
+    "message": "Your username is invalid!"
+  }
+]
