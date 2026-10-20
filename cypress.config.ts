@@ -2,6 +2,7 @@ import { plugin as cypressGrepPlugin } from '@cypress/grep/plugin';
 import { defineConfig } from 'cypress';
 import registerMochawesome from 'cypress-mochawesome-reporter/plugin';
 import cypressOnFix from 'cypress-on-fix';
+import cypressSplit from 'cypress-split';
 
 import { registerFlakyReporter } from './cypress/plugins/flaky-reporter';
 import { registerLighthouse } from './cypress/plugins/lighthouse';
@@ -30,7 +31,8 @@ export default defineConfig({
   screenshotOnRunFailure: true,
 
   // Secrets: read in specs with `cy.env(['key'])`. Override with `cypress.env.json` (git-ignored)
-  // or a `CYPRESS_reqresApiKey` environment variable. The default is reqres' public free-tier key.
+  // or a `CYPRESS_reqresApiKey` environment variable. The default is reqres' public demo key, which
+  // is rate-limited per IP per day; use a key from a free reqres.in account for regular CI runs.
   env: {
     reqresApiKey: 'reqres-free-v1',
   },
@@ -53,7 +55,10 @@ export default defineConfig({
       const on = cypressOnFix(cypressOn);
 
       registerMochawesome(on);
+      // Order matters: grep narrows `specPattern` by tag first, then split shares what is left
+      // across CI machines (SPLIT / SPLIT_INDEX env vars; a no-op locally).
       cypressGrepPlugin(config);
+      cypressSplit(on, config);
       registerLighthouse(on);
       registerFlakyReporter(on);
 
