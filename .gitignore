@@ -1,0 +1,17 @@
+node_modules/
+
+# Cypress output
+/cypress/reports/
+/cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+/cypress/.tmp/
+
+# Local overrides (never commit secrets)
+cypress.env.json
+.env.local
+
+# OS / editor
+.DS_Store
+*.log
+.idea/

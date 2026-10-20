@@ -1,0 +1,69 @@
+{
+  "name": "cypress-qa-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cypress + TypeScript QA automation template: UI, API, accessibility, performance, parallel CI and HTML reporting.",
+  "keywords": [
+    "cypress",
+    "typescript",
+    "qa",
+    "e2e",
+    "api-testing",
+    "accessibility",
+    "lighthouse",
+    "template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sergiopiedra/cypress-qa-starter.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19"
+  },
+  "scripts": {
+    "cy:open": "cypress open --e2e --browser chrome",
+    "test": "cypress run --browser chrome",
+    "test:electron": "cypress run",
+    "test:smoke": "cypress run --browser chrome --expose grepTags=@smoke+-@quarantine",
+    "test:ui": "cypress run --browser chrome --spec \"cypress/e2e/ui/**/*.cy.ts\"",
+    "test:api": "cypress run --spec \"cypress/e2e/api/**/*.cy.ts\"",
+    "test:a11y": "cypress run --browser chrome --spec \"cypress/e2e/a11y/**/*.cy.ts\"",
+    "test:perf": "cypress run --browser chrome --spec \"cypress/e2e/perf/**/*.cy.ts\"",
+    "test:quarantine": "cypress run --browser chrome --expose grepTags=@quarantine",
+    "report:merge": "node scripts/merge-reports.ts",
+    "clean": "rimraf cypress/reports cypress/screenshots cypress/videos cypress/downloads cypress/.tmp",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run format:check"
+  },
+  "devDependencies": {
+    "@cypress/grep": "7.0.0",
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "axe-core": "4.14.0",
+    "cypress": "16.1.1",
+    "cypress-axe": "1.7.0",
+    "cypress-mochawesome-reporter": "5.0.0",
+    "cypress-on-fix": "1.1.0",
+    "cypress-split": "1.25.0",
+    "eslint": "10.13.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-cypress": "7.0.2",
+    "lighthouse": "13.5.0",
+    "mochawesome-merge": "5.1.1",
+    "mochawesome-report-generator": "6.3.2",
+    "prettier": "3.9.10",
+    "rimraf": "6.1.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.0"
+  },
+  "overrides": {
+    "cypress-axe": {
+      "cypress": "$cypress"
+    }
+  }
+}
