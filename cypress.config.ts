@@ -25,6 +25,12 @@ export default defineConfig({
   video: false,
   screenshotOnRunFailure: true,
 
+  // Secrets: read in specs with `cy.env(['key'])`. Override with `cypress.env.json` (git-ignored)
+  // or a `CYPRESS_reqresApiKey` environment variable. The default is reqres' public free-tier key.
+  env: {
+    reqresApiKey: 'reqres-free-v1',
+  },
+
   // Public, non-secret values: read in specs with `Cypress.expose('key')`.
   // Override from the CLI with `--expose key=value`.
   expose: {

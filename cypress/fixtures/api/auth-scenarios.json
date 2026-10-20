@@ -1,0 +1,37 @@
+[
+  {
+    "title": "registers a known user",
+    "endpoint": "register",
+    "body": { "email": "eve.holt@reqres.in", "password": "pistol" },
+    "status": 200,
+    "expectToken": true
+  },
+  {
+    "title": "rejects registration without password",
+    "endpoint": "register",
+    "body": { "email": "sydney@fife" },
+    "status": 400,
+    "error": "Missing password"
+  },
+  {
+    "title": "rejects registration without email",
+    "endpoint": "register",
+    "body": { "password": "pistol" },
+    "status": 400,
+    "error": "Missing email or username"
+  },
+  {
+    "title": "logs in a known user",
+    "endpoint": "login",
+    "body": { "email": "eve.holt@reqres.in", "password": "cityslicka" },
+    "status": 200,
+    "expectToken": true
+  },
+  {
+    "title": "rejects login without password",
+    "endpoint": "login",
+    "body": { "email": "peter@klaven" },
+    "status": 400,
+    "error": "Missing password"
+  }
+]
