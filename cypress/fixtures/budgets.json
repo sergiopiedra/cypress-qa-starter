@@ -1,5 +1,28 @@
 {
   "api": {
     "maxResponseTimeMs": 3000
+  },
+  "perfPages": ["/login", "/tables", "/dynamic_loading/2"],
+  "lighthouse": {
+    "desktop": {
+      "categories": {
+        "performance": 80,
+        "accessibility": 90,
+        "best-practices": 90,
+        "seo": 85
+      },
+      "metrics": {
+        "first-contentful-paint": 1800,
+        "largest-contentful-paint": 2500,
+        "cumulative-layout-shift": 0.1,
+        "total-blocking-time": 200,
+        "server-response-time": 600
+      }
+    }
+  },
+  "webVitals": {
+    "lcp": 2500,
+    "fcp": 1800,
+    "cls": 0.1
   }
 }

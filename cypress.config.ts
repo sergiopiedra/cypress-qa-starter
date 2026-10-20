@@ -3,6 +3,8 @@ import { defineConfig } from 'cypress';
 import registerMochawesome from 'cypress-mochawesome-reporter/plugin';
 import cypressOnFix from 'cypress-on-fix';
 
+import { registerLighthouse } from './cypress/plugins/lighthouse';
+
 export default defineConfig({
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
@@ -50,6 +52,7 @@ export default defineConfig({
 
       registerMochawesome(on);
       cypressGrepPlugin(config);
+      registerLighthouse(on);
 
       on('task', {
         log(message: unknown) {
